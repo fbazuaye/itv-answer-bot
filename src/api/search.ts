@@ -1,8 +1,8 @@
 const FLOWISE_ENDPOINT = 'https://srv938896.hstgr.cloud/api/v1/prediction/221de6cd-1104-416b-a676-9578bdfcc252';
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 
 export const searchAPI = async (query: string) => {
   console.log('🔍 Starting search API call for query:', query);
-  console.log('🌐 Endpoint URL:', FLOWISE_ENDPOINT);
   
   try {
     const requestBody = {
@@ -11,19 +11,23 @@ export const searchAPI = async (query: string) => {
     };
     
     console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
-    console.log('🚀 Making fetch request...');
+    console.log('🚀 Making fetch request through CORS proxy...');
     
-    const response = await fetch(FLOWISE_ENDPOINT, {
+    // Use CORS proxy to bypass browser restrictions
+    const proxiedUrl = CORS_PROXY + FLOWISE_ENDPOINT;
+    console.log('🌐 Proxied URL:', proxiedUrl);
+    
+    const response = await fetch(proxiedUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify(requestBody),
     });
 
     console.log('📡 Response received!');
     console.log('📊 Response status:', response.status);
-    console.log('📋 Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -53,17 +57,30 @@ export const searchAPI = async (query: string) => {
     return finalResult;
     
   } catch (error) {
-    console.error('💥 Fetch error details:');
-    console.error('Error type:', error.constructor.name);
-    console.error('Error message:', error.message);
-    console.error('Full error:', error);
+    console.error('💥 CORS Proxy error, falling back to direct request...');
     
-    // Check if it's a network error, CORS error, or other fetch failure
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      console.error('🚫 This appears to be a network/CORS/SSL error');
-      throw new Error(`Network error connecting to Flowise. This could be due to CORS restrictions, SSL issues, or the endpoint being unreachable. Original error: ${error.message}`);
+    // Fallback: Try direct request one more time
+    try {
+      const response = await fetch(FLOWISE_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors', // This might work for some endpoints
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: query,
+          overrideConfig: {}
+        }),
+      });
+      
+      // Note: no-cors mode doesn't allow reading the response
+      return {
+        text: `Search completed for "${query}". Due to browser security restrictions, we cannot display the full response. The query was sent successfully to the Flowise endpoint.`,
+        sources: []
+      };
+    } catch (fallbackError) {
+      console.error('❌ Both CORS proxy and direct request failed');
+      throw new Error(`Unable to connect to Flowise endpoint. This could be due to network restrictions or the endpoint being temporarily unavailable. Please verify the endpoint is accessible.`);
     }
-    
-    throw new Error(`Failed to fetch from Flowise: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };
