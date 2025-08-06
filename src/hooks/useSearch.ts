@@ -30,6 +30,9 @@ export const useSearch = (): UseSearchReturn => {
     setError(null);
 
     try {
+      console.log('Making request to:', FLOWISE_ENDPOINT);
+      console.log('Query:', query);
+      
       const response = await fetch(FLOWISE_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -40,7 +43,12 @@ export const useSearch = (): UseSearchReturn => {
         }),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
         throw new Error(`Search failed: ${response.status} ${response.statusText}`);
       }
 
