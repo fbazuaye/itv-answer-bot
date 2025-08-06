@@ -140,7 +140,7 @@ export const Search = () => {
                 ITV AI News Search Engine
               </h1>
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                Powered by advanced AI to search through News Bulletin and provide intelligent answers
+                Powered by advanced AI to search through Our News Bulletin and provide intelligent answers
               </p>
             </div>
 
