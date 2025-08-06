@@ -155,9 +155,6 @@ export const Search = () => {
               alt="ITV Benin Logo" 
               className="h-8"
             />
-            <h1 className="text-lg font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              ITV Ai News Search Engine
-            </h1>
           </div>
           <div className="flex items-center gap-4">
             <Button 
