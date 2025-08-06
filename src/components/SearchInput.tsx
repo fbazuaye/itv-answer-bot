@@ -13,7 +13,7 @@ interface SearchInputProps {
 export const SearchInput = ({ 
   onSearch, 
   isLoading = false, 
-  placeholder = "Ask anything or search through documents...",
+  placeholder = "Ask ITVAiNewsSearchEngine",
   showButtons = true
 }: SearchInputProps) => {
   const [query, setQuery] = useState("");
@@ -57,25 +57,6 @@ export const SearchInput = ({
         </div>
       </form>
 
-      {showButtons && (
-        <div className="flex gap-3 mt-6 justify-center">
-          <Button
-            onClick={handleSubmit}
-            disabled={!query.trim() || isLoading}
-            className="rounded-full px-6 py-2"
-          >
-            Search
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleFeelingCurious}
-            disabled={isLoading}
-            className="rounded-full px-6 py-2"
-          >
-            I'm Feeling Curious
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
