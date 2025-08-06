@@ -4,6 +4,7 @@ import { SearchInput } from "@/components/SearchInput";
 import { ChatBubble } from "@/components/ChatBubble";
 import { ConversationHistory } from "@/components/ConversationHistory";
 import { UserMenu } from "@/components/UserMenu";
+import { Footer } from "@/components/Footer";
 import { LoadingSpinner, SearchingSkeleton } from "@/components/LoadingSpinner";
 import { useSearch } from "@/hooks/useSearch";
 import { useAuth } from "@/hooks/useAuth";
@@ -210,12 +211,6 @@ export const Search = () => {
             </div>
 
             <SearchInput onSearch={handleSearch} isLoading={isLoading} />
-
-            <div className="mt-12 text-center">
-              <p className="text-sm text-muted-foreground">
-                Powered By LiveGig Ltd
-              </p>
-            </div>
           </div>
         ) : (
           // Chat view
@@ -257,6 +252,7 @@ export const Search = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
