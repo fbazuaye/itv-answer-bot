@@ -149,7 +149,7 @@ export const Search = () => {
       <div className="flex-1 flex flex-col">
         {/* Header with auth controls */}
         <div className="border-b border-border p-4 flex justify-between items-center">
-          <h1 className="text-xl font-semibold">ITV AI News Search Engine</h1>
+          <h1 className="text-xl font-semibold"></h1>
           <div className="flex items-center gap-4">
             {user ? (
               <UserMenu />
