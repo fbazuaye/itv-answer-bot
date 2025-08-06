@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SearchInput } from "@/components/SearchInput";
 import { ChatBubble } from "@/components/ChatBubble";
 import { ConversationHistory } from "@/components/ConversationHistory";
+import { UserMenu } from "@/components/UserMenu";
 import { LoadingSpinner, SearchingSkeleton } from "@/components/LoadingSpinner";
 import { useSearch } from "@/hooks/useSearch";
+import { useAuth } from "@/hooks/useAuth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 interface ChatMessage {
   id: string;
@@ -31,8 +35,19 @@ export const Search = () => {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const [showSources, setShowSources] = useState(false);
   const { search, isLoading } = useSearch();
+  const { user, saveSearchHistory, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
 
   const activeConversation = conversations.find(c => c.id === activeConversationId);
+
+  // Show loading while checking auth state
+  if (authLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   const createNewConversation = (query: string): Conversation => {
     const id = `conv_${Date.now()}`;
@@ -103,6 +118,11 @@ export const Search = () => {
         const filtered = prev.filter(c => c.id !== conversation.id);
         return [updatedConversation, ...filtered];
       });
+
+      // Save to database if user is authenticated
+      if (user && result.text) {
+        await saveSearchHistory(query, result.text, result.sources);
+      }
     }
   };
 
@@ -127,6 +147,23 @@ export const Search = () => {
       />
 
       <div className="flex-1 flex flex-col">
+        {/* Header with auth controls */}
+        <div className="border-b border-border p-4 flex justify-between items-center">
+          <h1 className="text-xl font-semibold">ITV AI News Search Engine</h1>
+          <div className="flex items-center gap-4">
+            {user ? (
+              <UserMenu />
+            ) : (
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/auth')}
+                className="text-sm"
+              >
+                Sign In
+              </Button>
+            )}
+          </div>
+        </div>
         {!activeConversation ? (
           // Homepage view
           <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -139,9 +176,26 @@ export const Search = () => {
               <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 ITV AI News Search Engine
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
+              <p className="text-xl text-muted-foreground mb-4 max-w-2xl">
                 Powered by advanced AI to search through our News Bulletin and provide intelligent answers
               </p>
+              {user && (
+                <p className="text-sm text-muted-foreground mb-8">
+                  Welcome back, {user.email}! Your search history is automatically saved.
+                </p>
+              )}
+              {!user && (
+                <p className="text-sm text-muted-foreground mb-8">
+                  <Button 
+                    variant="link" 
+                    onClick={() => navigate('/auth')}
+                    className="p-0 h-auto text-primary"
+                  >
+                    Sign in
+                  </Button>
+                  {' '}to save your search history and get personalized results.
+                </p>
+              )}
             </div>
 
             <SearchInput onSearch={handleSearch} isLoading={isLoading} />
