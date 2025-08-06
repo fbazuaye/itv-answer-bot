@@ -148,7 +148,7 @@ export const Search = () => {
 
             <div className="mt-12 text-center">
               <p className="text-sm text-muted-foreground">
-                Designed By Frank Bazuaye • Powered By LiveGig Ltd
+                Powered By LiveGig Ltd
               </p>
             </div>
           </div>
