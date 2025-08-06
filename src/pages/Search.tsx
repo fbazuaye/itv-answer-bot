@@ -236,14 +236,16 @@ export const Search = () => {
 
             <ScrollArea className="flex-1 p-6">
               <div className="max-w-4xl mx-auto">
-                {activeConversation.messages.map((message) => (
-                  <ChatBubble
-                    key={message.id}
-                    message={message}
-                    showSources={showSources}
-                    onToggleSources={() => setShowSources(!showSources)}
-                  />
-                ))}
+                {activeConversation.messages
+                  .filter(message => message.type === 'ai')
+                  .map((message) => (
+                    <ChatBubble
+                      key={message.id}
+                      message={message}
+                      showSources={showSources}
+                      onToggleSources={() => setShowSources(!showSources)}
+                    />
+                  ))}
                 
                 {isLoading && <SearchingSkeleton />}
               </div>
