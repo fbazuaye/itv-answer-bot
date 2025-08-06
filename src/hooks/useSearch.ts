@@ -33,8 +33,10 @@ export const useSearch = (): UseSearchReturn => {
       console.log('Making request to:', FLOWISE_ENDPOINT);
       console.log('Query:', query);
       
+      // Try different request formats for Flowise
       const requestBody = {
         question: query,
+        overrideConfig: {}
       };
       console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
@@ -42,21 +44,31 @@ export const useSearch = (): UseSearchReturn => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(requestBody),
       });
 
       console.log('Response status:', response.status);
       console.log('Response statusText:', response.statusText);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response body:', errorText);
-        throw new Error(`Search failed: ${response.status} ${response.statusText} - ${errorText}`);
+        console.error('Error response body:', responseText);
+        throw new Error(`Search failed: ${response.status} ${response.statusText} - ${responseText}`);
       }
 
-      const data = await response.json();
+      // Try to parse the response
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Failed to parse JSON:', parseError);
+        // If it's not JSON, treat as plain text
+        data = responseText;
+      }
       
       // Handle different response formats from Flowise
       let result: SearchResponse = {};
