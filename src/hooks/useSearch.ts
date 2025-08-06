@@ -26,6 +26,9 @@ export const useSearch = (): UseSearchReturn => {
   const search = useCallback(async (query: string): Promise<SearchResponse | null> => {
     if (!query.trim()) return null;
 
+    console.log('=== SEARCH FUNCTION CALLED ===');
+    console.log('Query received:', query);
+
     setIsLoading(true);
     setError(null);
 
