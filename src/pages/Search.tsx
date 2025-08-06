@@ -184,11 +184,6 @@ export const Search = () => {
           // Homepage view
           <div className="flex-1 flex flex-col items-center justify-center p-8">
             <div className="text-center mb-12">
-              <img 
-                src="/lovable-uploads/32ce3de8-9ebe-4ea5-a38c-b9df9e3b3710.png" 
-                alt="ITV Benin Logo" 
-                className="h-20 mx-auto mb-8"
-              />
               <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 ITV Ai News Search Engine
               </h1>
