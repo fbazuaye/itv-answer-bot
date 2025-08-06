@@ -16,7 +16,7 @@ interface UseSearchReturn {
   error: string | null;
 }
 
-const FLOWISE_ENDPOINT = 'https://livegigaichatbot.onrender.com/api/v1/prediction/300308c0-f14d-4ff1-a0a3-075c245eb74a';
+const FLOWISE_ENDPOINT = 'https://srv938896.hstgr.cloud/api/v1/prediction/221de6cd-1104-416b-a676-9578bdfcc252';
 
 export const useSearch = (): UseSearchReturn => {
   const [isLoading, setIsLoading] = useState(false);
