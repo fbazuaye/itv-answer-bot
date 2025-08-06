@@ -149,17 +149,27 @@ export const Search = () => {
       <div className="flex-1 flex flex-col">
         {/* Header with auth controls */}
         <div className="border-b border-border p-4 flex justify-between items-center">
-          <Button 
-            variant="ghost" 
-            onClick={() => {
-              setActiveConversationId(null);
-              navigate('/');
-            }}
-            className="text-xl font-semibold hover:bg-transparent"
-          >
-            🏠 Home
-          </Button>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/lovable-uploads/32ce3de8-9ebe-4ea5-a38c-b9df9e3b3710.png" 
+              alt="ITV Benin Logo" 
+              className="h-8"
+            />
+            <h1 className="text-lg font-semibold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              ITV Ai News Search Engine
+            </h1>
+          </div>
           <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => {
+                setActiveConversationId(null);
+                navigate('/');
+              }}
+              className="text-sm hover:bg-accent"
+            >
+              🏠 Home
+            </Button>
             {user ? (
               <UserMenu />
             ) : (
