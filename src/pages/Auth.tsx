@@ -222,7 +222,14 @@ export const Auth = () => {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center space-y-2">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/')}
+            className="w-full"
+          >
+            Back to Home
+          </Button>
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
