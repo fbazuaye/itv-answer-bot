@@ -173,9 +173,6 @@ export const Search = () => {
                 alt="ITV Benin Logo" 
                 className="h-20 mx-auto mb-8"
               />
-              <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                ITV AI News Search Engine
-              </h1>
               <p className="text-xl text-muted-foreground mb-4 max-w-2xl">
                 Powered by advanced AI to search through our News Bulletin and provide intelligent answers
               </p>
