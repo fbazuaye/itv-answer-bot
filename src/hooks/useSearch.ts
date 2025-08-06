@@ -28,19 +28,20 @@ export const useSearch = (): UseSearchReturn => {
 
     console.log('=== SEARCH FUNCTION CALLED ===');
     console.log('Query received:', query);
+    alert('Search function called with: ' + query); // Debug alert
 
     setIsLoading(true);
     setError(null);
 
     try {
       console.log('Making request to:', FLOWISE_ENDPOINT);
-      console.log('Query:', query);
       
-      // Try different request formats for Flowise
+      // Test if the endpoint is reachable first
       const requestBody = {
         question: query,
         overrideConfig: {}
       };
+      
       console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
       const response = await fetch(FLOWISE_ENDPOINT, {
@@ -52,24 +53,26 @@ export const useSearch = (): UseSearchReturn => {
         body: JSON.stringify(requestBody),
       });
 
+      console.log('Response received!');
       console.log('Response status:', response.status);
       console.log('Response statusText:', response.statusText);
       
       const responseText = await response.text();
-      console.log('Raw response:', responseText);
+      console.log('Raw response text:', responseText);
 
       if (!response.ok) {
-        console.error('Error response body:', responseText);
-        throw new Error(`Search failed: ${response.status} ${response.statusText} - ${responseText}`);
+        console.error('Error response:', responseText);
+        throw new Error(`API Error: ${response.status} - ${responseText}`);
       }
 
       // Try to parse the response
       let data;
       try {
         data = JSON.parse(responseText);
+        console.log('Parsed JSON data:', data);
       } catch (parseError) {
         console.error('Failed to parse JSON:', parseError);
-        // If it's not JSON, treat as plain text
+        console.log('Treating as plain text response');
         data = responseText;
       }
       
@@ -92,20 +95,26 @@ export const useSearch = (): UseSearchReturn => {
         result.text = JSON.stringify(data);
       }
 
+      console.log('Final result:', result);
       return result;
     } catch (err) {
+      console.error('=== SEARCH ERROR ===');
+      console.error('Error details:', err);
+      
       const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+      console.error('Error message:', errorMessage);
+      
       setError(errorMessage);
       
       toast({
         title: "Search Error",
-        description: "Failed to get response. Please try again.",
+        description: `Failed to get response: ${errorMessage}`,
         variant: "destructive",
       });
 
-      // Return a fallback response
+      // Return a more informative fallback response
       return {
-        text: "I apologize, but I'm currently unable to process your request due to a technical issue. Please try again in a moment.",
+        text: `Search failed: ${errorMessage}. Please check your internet connection and try again.`,
         sources: []
       };
     } finally {
