@@ -33,23 +33,27 @@ export const useSearch = (): UseSearchReturn => {
       console.log('Making request to:', FLOWISE_ENDPOINT);
       console.log('Query:', query);
       
+      const requestBody = {
+        question: query,
+      };
+      console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch(FLOWISE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          question: query,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
+      console.log('Response statusText:', response.statusText);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error(`Search failed: ${response.status} ${response.statusText}`);
+        console.error('Error response body:', errorText);
+        throw new Error(`Search failed: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
