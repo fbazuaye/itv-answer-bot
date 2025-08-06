@@ -1,20 +1,39 @@
-// Simple in-memory search function as fallback while we set up proper API
+const FLOWISE_ENDPOINT = 'https://srv938896.hstgr.cloud/api/v1/prediction/221de6cd-1104-416b-a676-9578bdfcc252';
+
 export const searchAPI = async (query: string) => {
-  // For demo purposes, return a mock response
-  // In production, this would connect to your search service
-  return {
-    text: `Here's information about "${query}": This is a demo response showing that the search functionality is working. In a production environment, this would connect to your actual search API or knowledge base to provide real answers to user queries.`,
-    sources: [
-      {
-        title: "Demo Source 1",
-        url: "https://example.com/source1",
-        snippet: "This is a sample source snippet that would normally come from your search index."
+  try {
+    const response = await fetch(FLOWISE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      {
-        title: "Demo Source 2", 
-        url: "https://example.com/source2",
-        snippet: "Another example of how sources would be displayed in search results."
-      }
-    ]
-  };
+      body: JSON.stringify({
+        question: query,
+        overrideConfig: {}
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.text();
+    
+    // Parse the response - Flowise typically returns plain text or JSON
+    let result;
+    try {
+      result = JSON.parse(data);
+    } catch {
+      // If it's not JSON, treat as plain text
+      result = data;
+    }
+
+    return {
+      text: typeof result === 'string' ? result : result.text || result.answer || JSON.stringify(result),
+      sources: result.sources || []
+    };
+  } catch (error) {
+    // If CORS or network error, throw to be handled by useSearch hook
+    throw new Error(`Failed to fetch from Flowise: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
 };
