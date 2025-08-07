@@ -42,17 +42,17 @@ export const SearchInput = ({
     <div className="w-full max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="relative group">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+          <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 sm:h-5 sm:w-5" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
-            className="pl-12 pr-4 py-6 text-lg rounded-full border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-200 shadow-lg"
+            className="pl-10 sm:pl-12 pr-10 sm:pr-4 py-4 sm:py-6 text-base sm:text-lg rounded-full border-2 border-border hover:border-primary/50 focus:border-primary transition-all duration-200 shadow-lg"
             disabled={isLoading}
             autoFocus
           />
           {isLoading && (
-            <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 animate-spin text-primary" />
+            <Loader2 className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 animate-spin text-primary" />
           )}
         </div>
       </form>

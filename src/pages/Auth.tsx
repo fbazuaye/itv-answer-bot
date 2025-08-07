@@ -93,16 +93,16 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-sm sm:max-w-md">
+        <div className="text-center mb-6 sm:mb-8">
           <img 
             src="/lovable-uploads/32ce3de8-9ebe-4ea5-a38c-b9df9e3b3710.png" 
             alt="ITV Benin Logo" 
-            className="h-16 mx-auto mb-4"
+            className="h-12 sm:h-16 mx-auto mb-4"
           />
-          <h1 className="text-2xl font-bold text-foreground">ITV AI News Search Engine</h1>
-          <p className="text-muted-foreground">Access your personalized search experience</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">ITV AI News Search Engine</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-2">Access your personalized search experience</p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
@@ -222,21 +222,27 @@ export const Auth = () => {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-6 text-center space-y-2">
+        <div className="mt-4 sm:mt-6 text-center space-y-2">
           <Button
             variant="outline"
             onClick={() => navigate('/')}
-            className="w-full"
+            className="w-full text-sm sm:text-base"
           >
             Back to Home
           </Button>
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="text-sm text-muted-foreground"
+            className="text-xs sm:text-sm text-muted-foreground w-full"
           >
             Continue without account
           </Button>
+        </div>
+        
+        <div className="mt-6 text-center">
+          <p className="text-xs text-muted-foreground">
+            Powered By LiveGig Ltd
+          </p>
         </div>
       </div>
     </div>

@@ -51,31 +51,32 @@ export const ConversationHistory = ({
   return (
     <div className={cn(
       "bg-card border-r border-border transition-all duration-300 flex flex-col",
-      isCollapsed ? "w-12" : "w-80"
+      isCollapsed ? "w-12" : "w-64 sm:w-72 lg:w-80"
     )}>
-      <div className="p-4 border-b border-border flex items-center justify-between">
+      <div className="p-3 sm:p-4 border-b border-border flex items-center justify-between">
         {!isCollapsed && (
-          <h2 className="font-semibold text-sm">Conversation History</h2>
+          <h2 className="font-semibold text-xs sm:text-sm">Conversation History</h2>
         )}
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="h-8 w-8 p-0"
+          className="h-6 w-6 sm:h-8 sm:w-8 p-0"
         >
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {isCollapsed ? <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" /> : <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />}
         </Button>
       </div>
 
       {!isCollapsed && (
         <ScrollArea className="flex-1 p-2">
           {Object.keys(groupedConversations).length === 0 ? (
-            <div className="p-4 text-center text-muted-foreground text-sm">
-              <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-              No conversations yet
+            <div className="p-3 sm:p-4 text-center text-muted-foreground text-xs sm:text-sm">
+              <MessageSquare className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 opacity-50" />
+              <span className="hidden sm:inline">No conversations yet</span>
+              <span className="sm:hidden">No chats</span>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {Object.entries(groupedConversations).map(([dateKey, convos]) => (
                 <div key={dateKey}>
                   <h3 className="text-xs font-medium text-muted-foreground mb-2 px-2">
@@ -86,31 +87,32 @@ export const ConversationHistory = ({
                       <div
                         key={conversation.id}
                         className={cn(
-                          "group relative rounded-lg p-3 cursor-pointer transition-colors hover:bg-accent",
+                          "group relative rounded-lg p-2 sm:p-3 cursor-pointer transition-colors hover:bg-accent",
                           activeConversationId === conversation.id && "bg-accent border border-primary/20"
                         )}
                         onClick={() => onSelectConversation(conversation.id)}
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate mb-1">
+                            <p className="text-xs sm:text-sm font-medium truncate mb-1 leading-tight">
                               {conversation.title}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              {conversation.messageCount} message{conversation.messageCount !== 1 ? 's' : ''}
+                              {conversation.messageCount} <span className="hidden sm:inline">message{conversation.messageCount !== 1 ? 's' : ''}</span>
+                              <span className="sm:hidden">msg{conversation.messageCount !== 1 ? 's' : ''}</span>
                             </p>
                           </div>
                           {onDeleteConversation && (
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                              className="opacity-0 group-hover:opacity-100 h-5 w-5 sm:h-6 sm:w-6 p-0 text-muted-foreground hover:text-destructive flex-shrink-0"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onDeleteConversation(conversation.id);
                               }}
                             >
-                              <Trash2 className="h-3 w-3" />
+                              <Trash2 className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                             </Button>
                           )}
                         </div>
@@ -126,8 +128,8 @@ export const ConversationHistory = ({
 
       {isCollapsed && conversations.length > 0 && (
         <div className="p-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <MessageSquare className="h-4 w-4 text-primary" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
           </div>
         </div>
       )}

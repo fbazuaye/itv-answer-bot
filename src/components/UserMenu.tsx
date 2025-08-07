@@ -30,29 +30,29 @@ export const UserMenu = ({ onShowHistory }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary text-primary-foreground">
+        <Button variant="ghost" className="relative h-6 w-6 sm:h-8 sm:w-8 rounded-full">
+          <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
+            <AvatarFallback className="bg-primary text-primary-foreground text-xs sm:text-sm">
               {getInitials(user.email || 'U')}
             </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-48 sm:w-56" align="end" forceMount>
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            <p className="font-medium">{user.email}</p>
+            <p className="font-medium text-sm truncate max-w-[200px]">{user.email}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
         {onShowHistory && (
-          <DropdownMenuItem onClick={onShowHistory}>
-            <History className="mr-2 h-4 w-4" />
+          <DropdownMenuItem onClick={onShowHistory} className="text-sm">
+            <History className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             <span>Search History</span>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={handleSignOut} className="text-sm">
+          <LogOut className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           <span>Sign out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
